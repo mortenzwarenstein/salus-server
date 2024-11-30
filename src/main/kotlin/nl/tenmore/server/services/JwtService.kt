@@ -17,16 +17,15 @@ class JwtService {
         return Jwts
             .builder()
             .claims(claims)
-            .subject(user.id)
-            .expiration(Date(System.currentTimeMillis() + 1000 * 60))
+            .subject(user.username)
+            .expiration(Date(System.currentTimeMillis() + 1000 * 60 * 2))
             .issuedAt(Date(System.currentTimeMillis()))
             .signWith(generateSigningKey())
             .compact()
     }
 
     fun generateToken(user: User): String {
-        val map = mutableMapOf("username" to user.username)
-        return generateToken(map, user)
+        return generateToken(mutableMapOf(),  user)
     }
 
     fun isTokenValid(jwt: String, userDetails: UserDetails): Boolean {
