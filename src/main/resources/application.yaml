@@ -1,0 +1,14 @@
+spring:
+  application:
+    name: 'salus'
+  datasource:
+    url: 'jdbc:postgresql://localhost:5432/salus'
+    username: 'salus'
+    password: 'salus'
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
