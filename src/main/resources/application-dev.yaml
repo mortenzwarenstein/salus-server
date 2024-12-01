@@ -3,9 +3,9 @@ spring:
     name: 'salus'
     key: ${SPRING_SECURITY_KEY}
   datasource:
-    url: 'jdbc:postgresql://${SPRING_DATABASE_HOST}/${SPRING_DATABASE_NAME}'
-    username: ${SPRING_DATABASE_USERNAME}
-    password: ${SPRING_DATABASE_PASSWORD}
+    url: 'jdbc:postgresql://localhost:5432/salus'
+    username: salus
+    password: salus
   jpa:
     show-sql: true
     hibernate:

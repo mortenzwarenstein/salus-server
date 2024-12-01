@@ -3,15 +3,14 @@ package nl.tenmore.server.services
 import io.jsonwebtoken.Claims
 import io.jsonwebtoken.Jwts
 import nl.tenmore.server.entities.User
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.security.core.userdetails.UserDetails
 import org.springframework.stereotype.Service
 import java.util.Date
 import javax.crypto.spec.SecretKeySpec
 
 @Service
-class JwtService {
-
-    private val SECRET = "5E4CB69BA9AF33FD6BBEE4F26913F5E4CB69BA9AF33FD6BBEE4F26913F5E4CB69BA9AF33FD6BBEE4F26913F5E4CB69BA9AF33FD6BBEE4F26913F5E4CB69BA9AF33FD6BBEE4F26913F"
+class JwtService(@Value("\${spring.application.key}") private val key: String) {
 
     fun generateToken(claims: Map<String, Any>, user: User): String {
         return Jwts
@@ -56,7 +55,7 @@ class JwtService {
     }
 
     private fun generateSigningKey(): SecretKeySpec {
-        return SecretKeySpec(SECRET.toByteArray(Charsets.UTF_8), "HmacSHA256")
+        return SecretKeySpec(key.toByteArray(Charsets.UTF_8), "HmacSHA256")
     }
 
     private fun isTokenExpired(jwt: String): Boolean {
