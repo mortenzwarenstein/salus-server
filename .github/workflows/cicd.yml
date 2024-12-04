@@ -4,6 +4,11 @@ on: [push]
 jobs:
   Deploy-To-Kubernetes:
     runs-on: ubuntu-latest
+    permissions:
+      packages: write
+      contents: read
+      attestations: write
+      id-token: write
     steps:
       - name: Check out repo
         uses: actions/checkout@v4
