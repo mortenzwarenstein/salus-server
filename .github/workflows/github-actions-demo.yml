@@ -1,18 +1,33 @@
-name: GitHub Actions Demo
-run-name: ${{ github.actor }} is testing out GitHub Actions 🚀
+name: GitHub to Kubernetes
+run-name: App is deploying to kubernetes 🚀
 on: [push]
 jobs:
-  Explore-GitHub-Actions:
+  Deploy-To-Kubernetes:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - name: Check out repo
+        uses: actions/checkout@v4
+      - name: Log in to Docker
+        uses: docker/login-action
         with:
-          java-version: '17'
-          distribution: 'temurin'
-          cache: maven
-      - name: Go to folder
-        run: cd ${{ github.workspace }}
-      - name: Build with Maven
-        run: mvn clean install -DskipTests
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: Extract metadata (tags, labels) for Docker
+        id: meta
+        uses: docker/metadata-action
+        with:
+          images: mortenzwarenstein/salus-server
+      - name: Build docker image and push
+        uses: docker/build-push-action
+        with:
+          context: .
+          file: ./DOckerfile
+          push: true
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+      - name: Generate artifact attestation
+        uses: actions/attest-build-provenance@v1
+        with:
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME}}
+          subject-digest: ${{ steps.push.outputs.digest }}
+          push-to-registry: true

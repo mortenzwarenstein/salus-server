@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: salus-server
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: salus-server
+  template:
+    metadata:
+      labels:
+        app: salus-server
+    spec:
+      containers:
+        - name: salus-server
+          image: mortenzwarenstein/salus-server
+          ports:
+            - containerPort: 8080
