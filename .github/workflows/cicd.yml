@@ -37,6 +37,7 @@ jobs:
           images: mortenzwarenstein/salus-server
       - name: Build docker image and push
         uses: docker/build-push-action@v6
+        id: push
         with:
           context: ${{ github.workspace }}
           file: ./Dockerfile
